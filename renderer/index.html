@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <title>9597 PLAYLIST</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h2>9597 Music Player🎶</h2>
+
+    <audio id="audio"></audio>
+    <div id="song-title">Select a song</div>
+
+    <div class="controls">
+      <button onclick="prevSong()">⏮</button>
+      <button onclick="playPause()">▶️ / ⏸</button>
+      <button onclick="nextSong()">⏭</button>
+    </div>
+    <input type="range" id="progress" value="0" />
+    <ul id="playlist"></ul>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

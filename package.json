@@ -1,16 +1,11 @@
 {
-  "name": "9597-love",
+  "name": "electron-music-player",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
-    "electron": "^40.0.0"
+    "electron": "^30.0.0"
   }
 }

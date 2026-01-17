@@ -1,0 +1,22 @@
+body {
+  font-family: arial;
+  background: #e2a6f5;
+  color: #ed325e;
+  text-align: center;
+}
+button {
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+#progress {
+  width: 80%;
+}
+li {
+  list-style: none;
+  padding: 8px;
+  cursor: pointer;
+}
+li:hover {
+  background-color: #ed325e;
+}
