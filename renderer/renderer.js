@@ -2,6 +2,8 @@ const audio = document.getElementById("audio");
 const progress = document.getElementById("progress");
 const title = document.getElementById("song-title");
 const playlist = document.getElementById("playlist");
+const playlistBtn = document.getElementById("playlistBtn");
+const playlistContainer = document.getElementById("playlistContainer");
 
 const songs = [
   { name: "blue v", file: "music/blue-V.mp3" },
@@ -21,6 +23,14 @@ songs.forEach((song, index) => {
   li.innerText = song.name;
   li.onclick = () => loadSong(index);
   playlist.appendChild(li);
+});
+
+playlistBtn.addEventListener("click", () => {
+  if (playlistContainer.style.display === "none") {
+    playlistContainer.style.display = "block";
+  } else {
+    playlistContainer.style.display = "none";
+  }
 });
 
 function loadSong(index) {

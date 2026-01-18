@@ -8,6 +8,9 @@ button {
   font-size: 20px;
   margin: 10px;
   cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background: #6a5acd;
 }
 #progress {
   width: 80%;
@@ -19,4 +22,15 @@ li {
 }
 li:hover {
   background-color: #d376f5;
+}
+#playlistContainer {
+  display: none;
+}
+#playlistBtn {
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: none;
+  background: #6a5acd;
+  color: white;
+  cursor: pointer;
 }
