@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <button id="playlistBtn" class="menu-btn">☰</button>
     <h2>9597 Music Player🎶</h2>
 
     <audio id="audio"></audio>
@@ -12,14 +13,13 @@
 
     <div class="controls">
       <button onclick="prevSong()">⏮</button>
-      <button onclick="playPause()">▶️ / ⏸</button>
+      <button id="playPauseBtn" onclick="playPause()">▶</button>
       <button onclick="nextSong()">⏭</button>
     </div>
     <input type="range" id="progress" value="0" />
 
-    <button id="playlistBtn">🎶 Playlist</button>
-
-    <div id="playlistContainer">
+    <div id="playlistContainer" class="sidebar">
+      <input type="text" id="searchInput" placeholder="Search Song..." />
       <ul id="playlist"></ul>
     </div>
 

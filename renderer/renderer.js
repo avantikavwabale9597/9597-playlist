@@ -4,6 +4,10 @@ const title = document.getElementById("song-title");
 const playlist = document.getElementById("playlist");
 const playlistBtn = document.getElementById("playlistBtn");
 const playlistContainer = document.getElementById("playlistContainer");
+const searchInput = document.getElementById("searchInput");
+const playPauseBtn = document.getElementById("playPauseBtn");
+
+let current = 0;
 
 const songs = [
   { name: "blue v", file: "music/blue-V.mp3" },
@@ -16,21 +20,30 @@ const songs = [
   { name: "too-sad-to-dance jk", file: "music/too-sad-to-dance-jk.mp3" },
 ];
 
-let current = 0;
+function renderPlaylist(filter = "") {
+  playlist.innerHTML = "";
 
-songs.forEach((song, index) => {
-  const li = document.createElement("li");
-  li.innerText = song.name;
-  li.onclick = () => loadSong(index);
-  playlist.appendChild(li);
-});
+  songs.forEach((song, index) => {
+    if (song.name.toLowerCase().includes(filter.toLowerCase())) {
+      const li = document.createElement("li");
+      li.innerText = song.name;
+      li.dataset.index = index;
+      li.onclick = () => loadSong(index);
+
+      if (index === current) li.classList.add("active");
+
+      playlist.appendChild(li);
+    }
+  });
+}
+renderPlaylist();
 
 playlistBtn.addEventListener("click", () => {
-  if (playlistContainer.style.display === "none") {
-    playlistContainer.style.display = "block";
-  } else {
-    playlistContainer.style.display = "none";
-  }
+  playlistContainer.classList.toggle("show");
+
+  playlistBtn.textContent = playlistContainer.classList.contains("show")
+    ? "✖"
+    : "☰";
 });
 
 function loadSong(index) {
@@ -38,10 +51,22 @@ function loadSong(index) {
   audio.src = songs[index].file;
   title.innerText = songs[index].name;
   audio.play();
+  playPauseBtn.textContent = "⏸";
+  renderPlaylist(searchInput.value);
 }
 
+searchInput.addEventListener("input", (e) => {
+  renderPlaylist(e.target.value);
+});
+
 function playPause() {
-  audio.paused ? audio.play() : audio.pause();
+  if (audio.paused) {
+    audio.play();
+    playPauseBtn.textContent = "⏸";
+  } else {
+    audio.pause();
+    playPauseBtn.textContent = "▶";
+  }
 }
 
 function nextSong() {
@@ -54,8 +79,10 @@ function prevSong() {
   loadSong(current);
 }
 
-audio.addEventListener("timeUpdate", () => {
-  progress.value = (audio.currentTime / audio.duration) * 100;
+audio.addEventListener("timeupdate", () => {
+  if (!isNaN(audio.duration)) {
+    progress.value = (audio.currentTime / audio.duration) * 100;
+  }
 });
 
 progress.addEventListener("input", () => {
