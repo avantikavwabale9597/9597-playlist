@@ -6,21 +6,32 @@
   </head>
   <body>
     <button id="playlistBtn" class="menu-btn">☰</button>
-    <h2>9597 Music Player🎶</h2>
+    <div id="mainContent">
+      <h2>9597 Music Player🎶</h2>
 
-    <audio id="audio"></audio>
-    <div id="song-title">Select a song</div>
+      <audio id="audio"></audio>
+      <div id="song-title">Select a song</div>
 
-    <div class="controls">
-      <button onclick="prevSong()">⏮</button>
-      <button id="playPauseBtn" onclick="playPause()">▶</button>
-      <button onclick="nextSong()">⏭</button>
+      <img id="albumArt" />
+
+      <div class="controls">
+        <button onclick="prevSong()">⏮</button>
+        <button id="playPauseBtn" onclick="playPause()">▶</button>
+        <button onclick="nextSong()">⏭</button>
+      </div>
+      <input type="range" id="progress" value="0" />
     </div>
-    <input type="range" id="progress" value="0" />
-
     <div id="playlistContainer" class="sidebar">
       <input type="text" id="searchInput" placeholder="Search Song..." />
       <ul id="playlist"></ul>
+    </div>
+
+    <div id="miniPlayer">
+      <img id="miniArt" src="images/default.png" />
+      <div class="mini-info">
+        <span id="miniTitle">No Song</span>
+      </div>
+      <button onclick="playPause">⏯</button>
     </div>
 
     <script src="renderer.js"></script>

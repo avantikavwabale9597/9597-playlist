@@ -6,18 +6,54 @@ const playlistBtn = document.getElementById("playlistBtn");
 const playlistContainer = document.getElementById("playlistContainer");
 const searchInput = document.getElementById("searchInput");
 const playPauseBtn = document.getElementById("playPauseBtn");
+const mainContent = document.getElementById("mainContent");
+const miniPlayer = document.getElementById("miniPlayer");
+const miniTitle = document.getElementById("miniTitle");
+const albumArt = document.getElementById("albumArt");
+const canvas = document.getElementById("waveform");
+const ctx = document.getElementById("2d");
 
 let current = 0;
+let isShuffle = false;
+let isRepeat = false;
 
 const songs = [
-  { name: "blue v", file: "music/blue-V.mp3" },
-  { name: "cheek-to-cheek v", file: "music/Cheek-to-Cheek-V.mp3" },
-  { name: "for-us v", file: "music/for-us-V (1).mp3" },
-  { name: "love-me-again v", file: "music/love-me-again-V.mp3" },
-  { name: "shot-glass-of-tears jk", file: "music/shot-glass-of-tears-jk.mp3" },
-  { name: "still-with you jk", file: "music/still-with-you-jk.mp3" },
-  { name: "to-find-you jk", file: "music/to-find-you-jk.mp3" },
-  { name: "too-sad-to-dance jk", file: "music/too-sad-to-dance-jk.mp3" },
+  {
+    name: "To Find You JK",
+    file: "music/to-find-you-jk.mp3",
+    art: "images/to-find-you.jpg",
+  },
+  { name: "Blue V", file: "music/blue-V.mp3", art: "images/layover.jpg" },
+  {
+    name: "Still With You JK",
+    file: "music/still-with-you-jk.mp3",
+    art: "images/stiill-with-you.jpg",
+  },
+  {
+    name: "Cheek To Cheek V",
+    file: "music/Cheek-to-Cheek-V.mp3",
+    art: "images/le-jazz-v.jpg",
+  },
+  {
+    name: "Shot Glass Of Tears JK",
+    file: "music/shot-glass-of-tears-jk.mp3",
+    art: "images/golden.jpg",
+  },
+  {
+    name: "For Us V",
+    file: "music/for-us-V (1).mp3",
+    art: "images/layover.jpg",
+  },
+  {
+    name: "Too Sad To Dance JK",
+    file: "music/too-sad-to-dance-jk.mp3",
+    art: "images/golden.jpg",
+  },
+  {
+    name: "Love Me Again V",
+    file: "music/love-me-again-V.mp3",
+    art: "images/layover.jpg",
+  },
 ];
 
 function renderPlaylist(filter = "") {
@@ -40,6 +76,7 @@ renderPlaylist();
 
 playlistBtn.addEventListener("click", () => {
   playlistContainer.classList.toggle("show");
+  mainContent.classList.toggle("blur");
 
   playlistBtn.textContent = playlistContainer.classList.contains("show")
     ? "✖"
@@ -49,15 +86,18 @@ playlistBtn.addEventListener("click", () => {
 function loadSong(index) {
   current = index;
   audio.src = songs[index].file;
+  albumArt.src = songs[index].art;
+  miniArt.src = songs[index].art;
+
   title.innerText = songs[index].name;
+  miniTitle.innerText = songs[index].name;
+
   audio.play();
   playPauseBtn.textContent = "⏸";
+  miniPlayer.classList.add("show");
+
   renderPlaylist(searchInput.value);
 }
-
-searchInput.addEventListener("input", (e) => {
-  renderPlaylist(e.target.value);
-});
 
 function playPause() {
   if (audio.paused) {
