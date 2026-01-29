@@ -12,9 +12,13 @@ const miniTitle = document.getElementById("miniTitle");
 const albumArt = document.getElementById("albumArt");
 const canvas = document.getElementById("waveform");
 const ctx = document.getElementById("2d");
+const shuffleBtn = document.getElementById("shuffleBtn");
+const repeatBtn = document.getElementById("repeatBtn");
+const savedIndex = localStorage.getItem("lastSongIndex");
 
 let current = 0;
 let isShuffle = false;
+let shuffleOrder = [];
 let isRepeat = false;
 
 const songs = [
@@ -95,7 +99,7 @@ function loadSong(index) {
   audio.play();
   playPauseBtn.textContent = "⏸";
   miniPlayer.classList.add("show");
-
+  localStorage.setItem("lastSongIndex", index);
   renderPlaylist(searchInput.value);
 }
 
@@ -110,9 +114,24 @@ function playPause() {
 }
 
 function nextSong() {
-  current = (current + 1) % songs.length;
+  if (isShuffle) {
+    const currentIndex = shuffleOrder.indexOf(current);
+    const nextIndex = (currentIndex + 1) % shuffleOrder.length;
+    current = shuffleOrder[nextIndex];
+  } else {
+    current = (current + 1) % songs.length;
+  }
   loadSong(current);
 }
+
+audio.addEventListener("ended", () => {
+  if (isRepeat) {
+    audio.currentTime = 0;
+    audio.play();
+  } else {
+    nextSong();
+  }
+});
 
 function prevSong() {
   current = (current - 1 + songs.length) % songs.length;
@@ -128,3 +147,31 @@ audio.addEventListener("timeupdate", () => {
 progress.addEventListener("input", () => {
   audio.currentTime = (progress.value / 100) * audio.duration;
 });
+
+searchInput.addEventListener("input", () => {
+  renderPlaylist(searchInput.value.trim());
+});
+
+repeatBtn.onclick = () => {
+  isRepeat = !isRepeat;
+  repeatBtn.style.opacity = isRepeat ? "1" : "0.5";
+};
+
+function toggleShuffle() {
+  isShuffle = !isShuffle;
+
+  if (isShuffle) {
+    shuffleOrder = songs.map((_, i) => i);
+    shuffleOrder = shuffleOrder.filter((i) => i !== current);
+    shuffleOrder.sort(() => Math.random() - 0.5);
+    shuffleOrder.unshift(current);
+  }
+  shuffleBtn.classList.toggle("active", isShuffle);
+}
+
+if (savedIndex !== null) {
+  current = Number(savedIndex);
+  loadSong(current);
+  audio.pause();
+  playPauseBtn.textContent = "▶";
+}
