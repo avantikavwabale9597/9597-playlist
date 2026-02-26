@@ -15,6 +15,8 @@ const ctx = document.getElementById("2d");
 const shuffleBtn = document.getElementById("shuffleBtn");
 const repeatBtn = document.getElementById("repeatBtn");
 const savedIndex = localStorage.getItem("lastSongIndex");
+const currentTimeE1 = document.getElementById("currentTime");
+const durationE1 = document.getElementById("duration");
 
 let current = 0;
 let isShuffle = false;
@@ -167,6 +169,7 @@ function toggleShuffle() {
     shuffleOrder.unshift(current);
   }
   shuffleBtn.classList.toggle("active", isShuffle);
+  shuffleBtn.style.opacity = isShuffle ? "1" : "0.5";
 }
 
 if (savedIndex !== null) {
@@ -174,4 +177,17 @@ if (savedIndex !== null) {
   loadSong(current);
   audio.pause();
   playPauseBtn.textContent = "▶";
+}
+
+audio.addEventListener("loadmetadata", () => {
+  durationE1.innerText = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", () => {
+  currentTimeE1.innerText = formatTime(audio.currentTime);
+});
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }

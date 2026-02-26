@@ -20,6 +20,11 @@
         <button onclick="nextSong()">⏭</button>
       </div>
       <input type="range" id="progress" value="0" />
+
+      <div id="timeDisplay">
+        <span id="currentTime">0:00</span>
+        <span id="duration"></span>
+      </div>
     </div>
     <div id="playlistContainer" class="sidebar">
       <input type="text" id="searchInput" placeholder="Search Song..." />
@@ -33,7 +38,7 @@
       </div>
       <button id="shuffleBtn" onclick="toggleShuffle()">⇄</button>
       <button id="repeatBtn">↻</button>
-      <button onclick="playPause()">⏯</button>
+      <button id="playPauseBtn" onclick="playPause()">▶</button>
     </div>
 
     <script src="renderer.js"></script>
