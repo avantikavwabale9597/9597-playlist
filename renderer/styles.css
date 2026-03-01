@@ -12,12 +12,25 @@ body {
 
 body {
   font-family: Arial, sans-serif;
-  background: #e2a6f5;
-  color: #ed325e;
+  background: linear-gradient(-45deg, #1e1e2e, #2a2a3d, #6a5acd, #181826);
+  background-size: 400% 400%;
+  animation: gradientMove 10s ease infinite;
+  transition: background 1s ease;
   text-align: center;
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+}
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 80% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .menu-btn {

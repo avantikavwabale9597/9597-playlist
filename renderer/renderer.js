@@ -28,37 +28,49 @@ const songs = [
     name: "To Find You JK",
     file: "music/to-find-you-jk.mp3",
     art: "images/to-find-you.jpg",
+    gradient: "linear-gradient(135deg, #153B2C, #1E4D3A, #b6c757)",
   },
-  { name: "Blue V", file: "music/blue-V.mp3", art: "images/layover.jpg" },
+  {
+    name: "Blue V",
+    file: "music/blue-V.mp3",
+    art: "images/layover.jpg",
+    gradient: "linear-gradient(135deg, #111111, #2B2B2B, #f1f1f1)",
+  },
   {
     name: "Still With You JK",
     file: "music/still-with-you-jk.mp3",
     art: "images/stiill-with-you.jpg",
+    gradient: "linear-gradient(135deg, #0C1C2C, #1F3C88, #5a56b7dd)",
   },
   {
     name: "Cheek To Cheek V",
     file: "music/Cheek-to-Cheek-V.mp3",
     art: "images/le-jazz-v.jpg",
+    gradient: "linear-gradient(135deg, #5C1A1B, #3B2A23, #1A0F0F)",
   },
   {
     name: "Shot Glass Of Tears JK",
     file: "music/shot-glass-of-tears-jk.mp3",
     art: "images/golden.jpg",
+    gradient: "linear-gradient(135deg, #0F3D2E, #184f42, #0A0A0A)",
   },
   {
     name: "For Us V",
     file: "music/for-us-V (1).mp3",
     art: "images/layover.jpg",
+    gradient: "linear-gradient(135deg, #111111, #2B2B2B, #f1f1f1)",
   },
   {
     name: "Too Sad To Dance JK",
     file: "music/too-sad-to-dance-jk.mp3",
     art: "images/golden.jpg",
+    gradient: "linear-gradient(135deg, #0F3D2E, #184f42, #0A0A0A)",
   },
   {
     name: "Love Me Again V",
     file: "music/love-me-again-V.mp3",
     art: "images/layover.jpg",
+    gradient: "linear-gradient(135deg, #111111, #2B2B2B, #f1f1f1)",
   },
 ];
 
@@ -97,6 +109,10 @@ function loadSong(index) {
 
   title.innerText = songs[index].name;
   miniTitle.innerText = songs[index].name;
+
+  document.body.style.background = songs[index].gradient;
+  document.body.style.backgroundSize = "400% 400%";
+  document.body.style.animation = "gradientMove 15s ease infinite";
 
   audio.play();
   playPauseBtn.textContent = "⏸";
