@@ -232,3 +232,29 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
+
+.like-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.like-btn i {
+  color: white;
+}
+
+.like-btn.liked i {
+  color: #ff3b5c;
+}
+
+.like-btn:hover {
+  transform: scale(1.15);
+}
+#likeBtn {
+  position: relative;
+  z-index: 2000;
+}

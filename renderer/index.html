@@ -3,9 +3,16 @@
   <head>
     <title>9597 PLAYLIST</title>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
   </head>
   <body>
     <button id="playlistBtn" class="menu-btn">☰</button>
+    <button id="likedToggleBtn" class="menu-btn" style="top: 70px">
+      <i class="fa-solid fa-heart"></i>
+    </button>
     <div id="mainContent">
       <h2>9597 Music Player🎶</h2>
 
@@ -13,6 +20,10 @@
       <div id="song-title">Select a song</div>
 
       <img id="albumArt" />
+
+      <button id="likeBtn" class="like-btn">
+        <i class="fa-regular fa-heart"></i>
+      </button>
 
       <div class="controls">
         <button onclick="prevSong()">⏮</button>
@@ -28,7 +39,15 @@
     </div>
     <div id="playlistContainer" class="sidebar">
       <input type="text" id="searchInput" placeholder="Search Song..." />
-      <ul id="playlist"></ul>
+
+      <div id="allSongsSection">
+        <ul id="playlist"></ul>
+      </div>
+
+      <div id="likedSection" style="display: none">
+        <h3 style="color: white">❤️ Liked Songs</h3>
+        <ul id="likedPlaylist"></ul>
+      </div>
     </div>
 
     <div id="miniPlayer">
@@ -38,7 +57,7 @@
       </div>
       <button id="shuffleBtn" onclick="toggleShuffle()">⇄</button>
       <button id="repeatBtn">↻</button>
-      <button id="playPauseBtn" onclick="playPause()">▶</button>
+      <button id="miniplayPauseBtn" onclick="playPause()">▶</button>
     </div>
 
     <script src="renderer.js"></script>

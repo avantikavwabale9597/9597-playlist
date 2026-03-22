@@ -17,11 +17,15 @@ const repeatBtn = document.getElementById("repeatBtn");
 const savedIndex = localStorage.getItem("lastSongIndex");
 const currentTimeE1 = document.getElementById("currentTime");
 const durationE1 = document.getElementById("duration");
+const likeBtn = document.getElementById("likeBtn");
+const likedToggleBtn = document.getElementById("likedToggleBtn");
+const likedSection = document.getElementById("likedSection");
 
 let current = 0;
 let isShuffle = false;
 let shuffleOrder = [];
 let isRepeat = false;
+let showingLiked = false;
 
 const songs = [
   {
@@ -207,3 +211,63 @@ function formatTime(time) {
   const seconds = Math.floor(time % 60);
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }
+
+let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
+
+function updateLikeUI() {
+  if (!songs[current]) return;
+
+  const isLiked = likedSongs.includes(songs[current].name);
+
+  likeBtn.innerHTML = isLiked
+    ? '<i class="fa-solid fa-heart"></i>'
+    : '<i class="fa-regular fa-heart"></i>';
+  likeBtn.classList.toggle("liked", isLiked);
+}
+updateLikeUI();
+
+likedToggleBtn.onclick = () => {
+  showingLiked = !showingLiked;
+
+  if (showingLiked) {
+    likedSection.style.display = "block";
+    playlist.style.display = "none";
+  } else {
+    likedSection.style.display = "none";
+    playlist.style.display = "block";
+  }
+};
+
+function renderLikedSongs() {
+  const likedContainer = document.getElementById("likedlaylist");
+  likedContainer.innerHTML = "";
+
+  const liked = songs.filter((song) => likedSongs.includes(song.name));
+  liked.forEach((song) => {
+    const li = document.createElement("li");
+    li.innerText = song.name;
+
+    li.onclick = () => {
+      const index = songs.findIndex((s) => s.name === song.name);
+      loadSong(index);
+    };
+    likedContainer.appendChild(li);
+  });
+}
+
+likeBtn.onclick = () => {
+  const songName = songs[current].name;
+
+  if (likedSongs.includes(songName)) {
+    likedSongs = likedSongs.filter((s) => s !== songName);
+  } else {
+    likedSongs.push(songName);
+  }
+
+  localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
+
+  updateLikeUI();
+  renderPlaylist(searchInput.value);
+  renderLikedSongs();
+};
+renderLikedSongs();
