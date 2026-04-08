@@ -25,6 +25,8 @@ const uploadBtn = document.getElementById("uploadBtn");
 const audioUpload = document.getElementById("audioUpload");
 const coverUpload = document.getElementById("coverUpload");
 const songNameInput = document.getElementById("songNameInput");
+const audioFileName = document.getElementById("audioFileName");
+const coverFileName = document.getElementById("coverFileName");
 
 let current = 0;
 let isShuffle = false;
@@ -354,6 +356,9 @@ uploadCancel.onclick = () => {
 
 audioUpload.addEventListener("change", () => {
   const file = audioUpload.files[0];
+  if (file) {
+    audioFileName.textContent = file.name;
+  }
   if (!file) return;
 
   if (file.type !== "audio/mpeg") {
@@ -367,6 +372,9 @@ audioUpload.addEventListener("change", () => {
 
 coverUpload.addEventListener("change", () => {
   const file = coverUpload.files[0];
+  if (file) {
+    coverFileName.textContent = file.name;
+  }
   if (!file) return;
 
   const valid = ["image/jpeg", "image/png", "image/jpg"];

@@ -343,3 +343,41 @@ body {
   color: white;
   cursor: pointer;
 }
+
+#songNameInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 15px;
+  font-size: 14px;
+  background: #2b2b3d;
+  color: white;
+}
+
+.file-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.custom-file {
+  background: linear-gradient(135deg, #7b61ff, #5a4bff);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.custom-file:hover {
+  transform: scale(1.05);
+}
+
+.file-group span {
+  font-size: 12px;
+  color: #ccc;
+}

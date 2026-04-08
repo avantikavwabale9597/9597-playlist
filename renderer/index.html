@@ -72,8 +72,27 @@
           id="songNameInput"
           placeholder="Enter your song name.."
         />
-        <input type="file" id="audioUpload" accept=".mp3" />
-        <input type="file" id="coverUpload" accept=".jpg, .jpeg, .png" />
+
+        <div class="file-group">
+          <label class="custom-file">
+            Choose Audio
+            <input type="file" id="audioUpload" accept=".mp3" hidden />
+          </label>
+          <span id="audioFileName">No File Chosen</span>
+        </div>
+
+        <div class="file-group">
+          <label class="custom-file">
+            Choose Cover
+            <input
+              type="file"
+              id="coverUpload"
+              accept=".jpg, .jpeg, .png"
+              hidden
+            />
+          </label>
+          <span id="coverFileName">No File Chosen</span>
+        </div>
 
         <div class="upload-actions">
           <button id="uploadConfirm">OK</button>
