@@ -13,6 +13,11 @@
     <button id="likedToggleBtn" class="menu-btn" style="top: 70px">
       <i class="fa-solid fa-heart"></i>
     </button>
+    <button id="uploadBtn" class="upload-btn">
+      <i class="fa-solid fa-upload"></i>
+      <span class="tooltip">Upload your own song with cover</span>
+    </button>
+
     <div id="mainContent">
       <h2>9597 Music Player🎶</h2>
 
@@ -59,6 +64,19 @@
       <button id="miniplayPauseBtn" onclick="playPause()">▶</button>
     </div>
 
+    <div id="uploadModal" class="upload-modal">
+      <div class="upload-box">
+        <h3>Upload Song</h3>
+
+        <input type="file" id="audioUpload" accept=".mp3" />
+        <input type="file" id="coverUpload" accept=".jpg, .jpeg, .png" />
+
+        <div class="upload-actions">
+          <button id="uploadConfirm">OK</button>
+          <button id="uploadCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
     <script src="renderer.js"></script>
   </body>
 </html>

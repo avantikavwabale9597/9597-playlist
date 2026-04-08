@@ -21,6 +21,9 @@ const likedPlaylist = document.getElementById("likedPlaylist");
 const allSongsSection = document.getElementById("allSongsSection");
 const miniArt = document.getElementById("miniArt");
 const miniPlayPauseBtn = document.getElementById("miniplayPauseBtn");
+const uploadBtn = document.getElementById("uploadBtn");
+const audioUpload = document.getElementById("audioUpload");
+const coverUpload = document.getElementById("coverUpload");
 
 let current = 0;
 let isShuffle = false;
@@ -78,6 +81,11 @@ const songs = [
     gradient: "linear-gradient(135deg, #111111, #2B2B2B, #f1f1f1)",
   },
 ];
+
+const savedSongs = JSON.parse(localStorage.getItem("userSongs"));
+if (savedSongs) {
+  songs.push(...savedSongs);
+}
 
 function formatTime(time) {
   const minutes = Math.floor(time / 60);
@@ -311,3 +319,130 @@ window.prevSong = prevSong;
 window.nextSong = nextSong;
 window.playPause = playPause;
 window.toggleShuffle = toggleShuffle;
+
+const uploadModal = document.getElementById("uploadModal");
+const uploadConfirm = document.getElementById("uploadConfirm");
+const uploadCancel = document.getElementById("uploadCancel");
+
+let tempAudio = null;
+let tempCover = null;
+
+uploadBtn.onclick = () => {
+  uploadModal.style.display = "flex";
+};
+
+uploadCancel.onclick = () => {
+  uploadModal.style.display = "none";
+  tempAudio = null;
+  tempCover = null;
+};
+
+audioUpload.addEventListener("change", () => {
+  const file = audioUpload.files[0];
+  if (!file) return;
+
+  if (file.type !== "audio/mpeg") {
+    alert("Only MP3 allowed!");
+    audioUpload.value = "";
+    return;
+  }
+
+  tempAudio = file;
+});
+
+coverUpload.addEventListener("change", () => {
+  const file = coverUpload.files[0];
+  if (!file) return;
+
+  const valid = ["image/jpeg", "image/png", "image/jpg"];
+  if (!valid.includes(file.type)) {
+    alert("Only JPG/PNG allowed!");
+    coverUpload.value = "";
+    return;
+  }
+
+  tempCover = file;
+});
+
+uploadConfirm.onclick = () => {
+  if (!tempAudio || !tempCover) {
+    alert("Select both audio and Cover!");
+    return;
+  }
+
+  const readerAudio = new FileReader();
+  const readerCover = new FileReader();
+
+  readerAudio.onload = () => {
+    readerCover.onload = () => {
+      generateGradientFromImage(tempCover, (gradient) => {
+        const newSong = {
+          name: tempAudio.name.replace(".mp3", ""),
+          file: readerAudio.result,
+          art: readerCover.result,
+          gradient: gradient,
+        };
+
+        songs.push(newSong);
+
+        const userSongs = songs.slice(8);
+        localStorage.setItem("userSongs", JSON.stringify(userSongs));
+
+        renderPlaylist();
+
+        uploadModal.style.display = "none";
+        tempAudio = null;
+        tempCover = null;
+
+        alert("Song Uploaded!");
+      });
+    };
+
+    readerCover.readAsDataURL(tempCover);
+  };
+
+  readerAudio.readAsDataURL(tempAudio);
+};
+
+function generateGradientFromImage(file, callback) {
+  const img = new Image();
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    img.src = e.target.result;
+  };
+
+  img.onload = function () {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    ctx.drawImage(img, 0, 0);
+
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+    let r = 0,
+      g = 0,
+      b = 0,
+      count = 0;
+
+    for (let i = 0; i < data.length; i += 40) {
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
+      count++;
+    }
+
+    r = Math.floor(r / count);
+    g = Math.floor(g / count);
+    b = Math.floor(b / count);
+
+    const gradient = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}), #000000, #ffffff)`;
+
+    callback(gradient);
+  };
+
+  reader.readAsDataURL(file);
+}
