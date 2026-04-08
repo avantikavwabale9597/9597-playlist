@@ -24,6 +24,7 @@ const miniPlayPauseBtn = document.getElementById("miniplayPauseBtn");
 const uploadBtn = document.getElementById("uploadBtn");
 const audioUpload = document.getElementById("audioUpload");
 const coverUpload = document.getElementById("coverUpload");
+const songNameInput = document.getElementById("songNameInput");
 
 let current = 0;
 let isShuffle = false;
@@ -117,6 +118,20 @@ function renderPlaylist(filter = "") {
       if (likedSongs.includes(song.name)) {
         li.innerHTML +=
           ' <i class="fa-solid fa-heart" style="color: #ff3b5c; font-size: 12px; float: right;"></i>';
+      }
+      if (song.isUser) {
+        const delBtn = document.createElement("i");
+        delBtn.className = "fa-solid fa-trash";
+        delBtn.style.float = "right";
+        delBtn.style.marginRight = "10px";
+        delBtn.style.cursor = "pointer";
+        delBtn.style.color = "#aaa";
+
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          deleteSong(index);
+        };
+        li.appendChild(delBtn);
       }
 
       li.dataset.index = index;
@@ -358,6 +373,7 @@ coverUpload.addEventListener("change", () => {
   if (!valid.includes(file.type)) {
     alert("Only JPG/PNG allowed!");
     coverUpload.value = "";
+    songNameInput.value = "";
     return;
   }
 
@@ -377,12 +393,16 @@ uploadConfirm.onclick = () => {
     readerCover.onload = () => {
       generateGradientFromImage(tempCover, (gradient) => {
         const newSong = {
-          name: tempAudio.name.replace(".mp3", ""),
+          name:
+            songNameInput.value.trim() !== ""
+              ? songNameInput.value.trim()
+              : tempAudio.name.replace(".mp3", ""),
           file: readerAudio.result,
           art: readerCover.result,
           gradient: gradient,
+          isUser: true,
         };
-
+        console.log("Input Name:", songNameInput.value);
         songs.push(newSong);
 
         const userSongs = songs.slice(8);
@@ -395,6 +415,7 @@ uploadConfirm.onclick = () => {
         tempCover = null;
 
         alert("Song Uploaded!");
+        songNameInput.value = "";
       });
     };
 
@@ -445,4 +466,23 @@ function generateGradientFromImage(file, callback) {
   };
 
   reader.readAsDataURL(file);
+}
+
+function deleteSong(index) {
+  if (!songs[index].isUser) {
+    alert("Default songs cannot be deleted");
+    return;
+  }
+
+  songs.splice(index, 1);
+
+  const userSongs = songs.filter((s) => s.isUser);
+  localStorage.setItem("userSongs", JSON.stringify(userSongs));
+
+  if (current === index) {
+    audio.pause();
+    title.innerText = "Select a song";
+    albumArt.src = "";
+  }
+  renderPlaylist();
 }
