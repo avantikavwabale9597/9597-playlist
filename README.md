@@ -4,7 +4,9 @@ FEATURES:
 
 1. Music Playback :
    Play/Pause/Next/Previous controls
+
    Interactive progress bar
+
    Display current time and duration
 
 2. Upload your own song :
