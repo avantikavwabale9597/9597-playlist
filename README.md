@@ -85,15 +85,21 @@ HTML5, CSS, JavaSript(ES6), FileReader API, LocalStorage API
 
 To run This locally on your machine :
 
-1.Simply install tthe application from the releses the ".exe" file
+1.Simply install tthe application from the releases the ".exe" file
+![alt text](img.png)
 
 (if some alert appears just click on more info and the click on Run anyway it's not harmful for your device)
 
 Then it will install automatically
+![alt text](img3.png)
 
 Then you're good to go to use my application
+![alt text](img2.png)
+
+![alt text](img1.png)
 
 demo video
+![alt text](demo.mp4)
 
 Why I Made It :
 So basically I Love music and I always wanted to make music players SO i gave it a try it does not have all features i've think about but It's nice tho :)
