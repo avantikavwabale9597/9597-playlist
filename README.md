@@ -61,6 +61,27 @@ FEATURES:
 KeyBoard shortcuts
 
 Space = Play / Pause
+
 → = Next Song
+
 ← = Previous Song
+
 M = Mute / Unmute
+
+9. Toast Notifications :
+   Smooth notification instead of alerts
+
+   Better UX feedback
+
+10. UI and Exerience :
+    Dynamic gradient background based on album art
+
+    Smooth Animations
+
+    Clean Modern Design
+
+TECH STACK :
+HTML5, CSS, JavaSript(ES6), FileReader API, LocalStorage API
+
+Why I Made It :
+So basically I Love music and I always wanted to make music players SO i gave it a try it does not have all features i've think about but It's nice tho :)
