@@ -83,5 +83,32 @@ M = Mute / Unmute
 TECH STACK :
 HTML5, CSS, JavaSript(ES6), FileReader API, LocalStorage API
 
+To run This locally on your machine :
+
+1.Simply install tthe application from the releses the ".exe" file
+
+(if some alert appears just click on more info and the click on Run anyway it's not harmful for your device)
+
+Then it will install automatically
+
+Then you're good to go to use my application
+
+demo video
+
 Why I Made It :
 So basically I Love music and I always wanted to make music players SO i gave it a try it does not have all features i've think about but It's nice tho :)
+
+How I made it:
+
+1.Firstly you must need nodejs and npm in your device if not install it according to your needs
+![alt text](image.png)
+
+2.then run "npm init -y" to intialise the project
+
+3.As it's electron project run "npm install electron --save-dev" to install electron. (You always need to run this command when you are making new elctron project. Run this in your project folder)
+
+4.You're done here with installations now just make files "index.html, styles.css, renderer.js" These are the main file where you write your code
+
+5.also make "main.js" This is very IMP file as this file loads your electrin window ans also initialise it in your "package.json" file
+
+Now you're done just write your codes in main file and there you go you will make your first desktop app using ElectronJS!!
