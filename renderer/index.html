@@ -18,6 +18,24 @@
       <span class="tooltip">Upload your own song with cover</span>
     </button>
 
+    <button id="createPlaylistBtn">+</button>
+
+    <div id="playlistModal" class="upload-modal">
+      <div class="upload-box">
+        <h3>Create Playlist</h3>
+
+        <input
+          type="text"
+          id="playlistNameInput"
+          placeholder="Enter your playlist Name"
+        />
+        <div class="upload-actions">
+          <button id="createPlaylistConfirm">Create</button>
+          <button id="createPlaylistCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
     <div id="mainContent">
       <h2>9597 Music Player🎶</h2>
 
@@ -100,6 +118,7 @@
         </div>
       </div>
     </div>
+    <div id="toast"></div>
     <script src="renderer.js"></script>
   </body>
 </html>

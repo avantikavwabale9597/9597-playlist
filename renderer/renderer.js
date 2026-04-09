@@ -1,3 +1,5 @@
+let playlists = JSON.parse(localStorage.getItem("playlists")) || {};
+
 const audio = document.getElementById("audio");
 const progress = document.getElementById("progress");
 const title = document.getElementById("song-title");
@@ -110,17 +112,28 @@ function updateLikeUI() {
 function renderPlaylist(filter = "") {
   playlist.innerHTML = "";
 
-  // ALWAYS SHOW ALL SONGS (just filter by search) - NO LIKED CHECK
   songs.forEach((song, index) => {
     if (!filter || song.name.toLowerCase().includes(filter.toLowerCase())) {
       const li = document.createElement("li");
-      li.innerText = song.name;
 
-      // Add heart icon if liked (visual feedback in main playlist)
+      // Main content with menu
+      li.innerHTML = `
+        <span class="song-name">${song.name}</span>
+        <span class="menu" data-index="${index}">⋮</span>
+      `;
+
+      // ❤️ Liked icon
       if (likedSongs.includes(song.name)) {
-        li.innerHTML +=
-          ' <i class="fa-solid fa-heart" style="color: #ff3b5c; font-size: 12px; float: right;"></i>';
+        const heart = document.createElement("i");
+        heart.className = "fa-solid fa-heart";
+        heart.style.color = "#ff3b5c";
+        heart.style.fontSize = "12px";
+        heart.style.marginRight = "8px";
+        heart.style.float = "right";
+        li.appendChild(heart);
       }
+
+      // 🗑 Delete button (only user songs)
       if (song.isUser) {
         const delBtn = document.createElement("i");
         delBtn.className = "fa-solid fa-trash";
@@ -133,13 +146,22 @@ function renderPlaylist(filter = "") {
           e.stopPropagation();
           deleteSong(index);
         };
+
         li.appendChild(delBtn);
       }
+
+      const menuBtn = li.querySelector(".menu");
+
+      menuBtn.onclick = (e) => {
+        e.stopPropagation();
+        showPlaylistOptions(index);
+      };
 
       li.dataset.index = index;
       li.onclick = () => loadSong(index);
 
       if (index === current) li.classList.add("active");
+
       playlist.appendChild(li);
     }
   });
@@ -187,7 +209,6 @@ function loadSong(index) {
   renderPlaylist(searchInput.value);
   updateLikeUI();
 
-  // Close sidebar when song selected
   playlistContainer.classList.remove("show");
   mainContent.classList.remove("blur");
   playlistBtn.textContent = "☰";
@@ -231,9 +252,8 @@ function toggleShuffle() {
   shuffleBtn.style.opacity = isShuffle ? "1" : "0.5";
 }
 
-// Event Listeners
 playlistBtn.addEventListener("click", () => {
-  showingLiked = false; // Always show all songs when opening main menu
+  showingLiked = false;
   allSongsSection.style.display = "block";
   likedSection.style.display = "none";
   likedToggleBtn.innerHTML = '<i class="fa-solid fa-heart"></i>';
@@ -287,13 +307,11 @@ repeatBtn.onclick = () => {
 likedToggleBtn.onclick = () => {
   showingLiked = !showingLiked;
   if (showingLiked) {
-    // Show ONLY liked songs
     allSongsSection.style.display = "none";
     likedSection.style.display = "block";
     renderLikedSongs();
     likedToggleBtn.innerHTML = '<i class="fa-solid fa-music"></i>'; // Shows "All Songs"
   } else {
-    // Show all songs
     allSongsSection.style.display = "block";
     likedSection.style.display = "none";
     renderPlaylist(searchInput.value);
@@ -313,11 +331,10 @@ likeBtn.onclick = () => {
 
   localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
   updateLikeUI();
-  renderPlaylist(searchInput.value); // Update hearts in main list
-  renderLikedSongs(); // Update liked list
+  renderPlaylist(searchInput.value);
+  renderLikedSongs();
 };
 
-// Initialize
 renderPlaylist();
 renderLikedSongs();
 updateLikeUI();
@@ -331,7 +348,6 @@ if (savedIndex !== null && songs[Number(savedIndex)]) {
   miniPlayPauseBtn.textContent = "▶";
 }
 
-// Expose global functions for onclick handlers
 window.prevSong = prevSong;
 window.nextSong = nextSong;
 window.playPause = playPause;
@@ -362,7 +378,7 @@ audioUpload.addEventListener("change", () => {
   if (!file) return;
 
   if (file.type !== "audio/mpeg") {
-    alert("Only MP3 allowed!");
+    showToast("Only MP3 allowed!");
     audioUpload.value = "";
     return;
   }
@@ -379,7 +395,7 @@ coverUpload.addEventListener("change", () => {
 
   const valid = ["image/jpeg", "image/png", "image/jpg"];
   if (!valid.includes(file.type)) {
-    alert("Only JPG/PNG allowed!");
+    showToast("Only JPG/PNG allowed!");
     coverUpload.value = "";
     songNameInput.value = "";
     return;
@@ -390,7 +406,7 @@ coverUpload.addEventListener("change", () => {
 
 uploadConfirm.onclick = () => {
   if (!tempAudio || !tempCover) {
-    alert("Select both audio and Cover!");
+    showToast("Select both audio and Cover!");
     return;
   }
 
@@ -422,7 +438,7 @@ uploadConfirm.onclick = () => {
         tempAudio = null;
         tempCover = null;
 
-        alert("Song Uploaded!");
+        showToast("Song Uploaded!");
         songNameInput.value = "";
       });
     };
@@ -478,7 +494,7 @@ function generateGradientFromImage(file, callback) {
 
 function deleteSong(index) {
   if (!songs[index].isUser) {
-    alert("Default songs cannot be deleted");
+    showToast("Default songs cannot be deleted");
     return;
   }
 
@@ -494,3 +510,105 @@ function deleteSong(index) {
   }
   renderPlaylist();
 }
+document.addEventListener("keydown", (e) => {
+  if (document.activeElement.tagName === "INPUT") return;
+
+  switch (e.code) {
+    case "Space":
+      e.preventDefault();
+      playPause();
+      break;
+
+    case "ArrowRight":
+      nextSong();
+      break;
+
+    case "ArrowLeft":
+      prevSong();
+      break;
+
+    case "KeyM":
+      audio.muted = !audio.muted;
+      break;
+  }
+});
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
+
+function createPlaylist(name) {
+  if (!name.trim()) return;
+
+  if (playlists[name]) {
+    showToast("Playlist already exists");
+    return;
+  }
+
+  playlists[name] = [];
+  localStorage.setItem("playlists", JSON.stringify(playlists));
+
+  showToast("Playlist Created!");
+  renderPlaylist();
+}
+
+function addToPlaylist(playlistName, songIndex) {
+  const song = songs[songIndex];
+
+  if (!playlists[playlistName].some((s) => s.name === song.name)) {
+    playlists[playlistName].push(song);
+    localStorage.setItem("playlists", JSON.stringify(playlists));
+    showToast("Added to " + playlistName);
+  } else {
+    showToast("Already in Playlist");
+  }
+}
+
+function showPlaylistOptions(index) {
+  const playlistNames = Object.keys(playlists);
+
+  if (playlistNames.length === 0) {
+    showToast("No Playlists yet");
+    return;
+  }
+
+  playlistNames.forEach((name) => {
+    const add = confirm(`Add to playlist: ${name}?`);
+    if (add) {
+      addToPlaylist(name, index);
+    }
+  });
+}
+
+const playlistModal = document.getElementById("playlistModal");
+const playlistNameInput = document.getElementById("playlistNameInput");
+const createPlaylistConfirm = document.getElementById("createPlaylistConfirm");
+const createPlaylistCancel = document.getElementById("createPlaylistCancel");
+
+document.getElementById("createPlaylistBtn").onclick = () => {
+  playlistModal.style.display = "flex";
+};
+
+createPlaylistCancel.onclick = () => {
+  playlistModal.style.display = "none";
+  playlistNameInput.value = "";
+};
+
+createPlaylistConfirm.onclick = () => {
+  const name = playlistNameInput.value.trim();
+
+  if (!name) {
+    showToast("Enter Palylist Name");
+    return;
+  }
+
+  createPlaylist(name);
+  playlistModal.style.display = "none";
+  playlistNameInput.value = "";
+};
